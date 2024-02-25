@@ -1,1 +1,1 @@
-print('fjut')
+print('test')
