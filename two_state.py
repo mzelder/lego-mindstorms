@@ -21,26 +21,32 @@ def calibrate():
     print("WHITE TAKEN")
     t.sleep(1)
     print("BLACK?????")
+    
     while True: #czekanie na input
         if b.any():
             break
     black = color_sensor.reflected_light_intensity
+    print("BLACK TAKEN")
+    t.sleep(1)
 
     return (white + black) / 2
 
-
-
+# poruszanie
 umax = 100
-alfa = 50
+alfa = 5
 r = calibrate()
 
 while True: #czekanie na input
     y = color_sensor.reflected_light_intensity
     e = r - y
-    if e >= 0:
+    if e < 0:
         motor_angle = alfa
     else:
         motor_angle = -alfa
-    tank.on_for_degrees(SpeedPercent(motor_angle), SpeedPercent(motor_angle), 0)
+    
+    left_speed = SpeedPercent(umax if e < 0 else 0)
+    right_speed = SpeedPercent(umax if e >= 0 else 0)
+    
+    tank.on_for_degrees(right_speed, left_speed, 10)
 
     
